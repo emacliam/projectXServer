@@ -25,15 +25,12 @@ cloudinary.config({
 // post request - create product
 router.post('/products', (req, res) => {
     try {
-
-
-
         const product = new Product()
         product.owner = req.body.ownerID
         product.name = req.body.name
         product.price = req.body.price
         product.description = req.body.description
-        product.imageUrl = "blaaa blaaa"
+        product.imageUrl = "https://images.unsplash.com/photo-1542393545-10f5cde2c810?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxzZWFyY2h8Mjd8fGxhcHRvcHxlbnwwfHwwfA%3D%3D&auto=format&fit=crop&w=500&q=60"
         product.model = req.body.model
         product.size = req.body.size
         product.category = req.body.category
