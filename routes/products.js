@@ -26,47 +26,24 @@ cloudinary.config({
 router.post('/products', (req, res) => {
     try {
 
-        const upload = multer({ storage }).single('imageUrl')
-        upload(req, res, function(err) {
-            if (err) {
-                return res.send(err)
-            }
-            console.log('file uploaded to server')
 
-            const path = req.file.path
-            const uniqueFilename = new Date().toISOString()
 
-            cloudinary.uploader.upload(
-                path, { public_id: `products/${uniqueFilename}`, tags: 'product' }, // directory and tags are optional
-                function(err, image) {
-                    // note if there is an error we need to unlink the image from the server
-                    // Also use try catch here
-                    if (err) return res.send(err)
-                    console.log('file uploaded to Cloudinary')
-                        // remove file from server
-                    const fs = require('fs')
-                    fs.unlinkSync(path)
-                        // return image details
-                    const url = image.secure_url
+        const product = new Product()
+        product.owner = req.body.ownerID
+        product.name = req.body.name
+        product.price = req.body.price
+        product.description = req.body.description
+        product.imageUrl = "blaaa blaaa"
+        product.model = req.body.model
+        product.size = req.body.size
+        product.category = req.body.category
+        product.date = moment().format('MMMM Do YYYY');
 
-                    const product = new Product()
-                    product.owner = req.body.ownerID
-                    product.name = req.body.name
-                    product.price = req.body.price
-                    product.description = req.body.description
-                    product.imageUrl = url
-                    product.model = req.body.model
-                    product.size = req.body.size
-                    product.category = req.body.category
-                    product.date = moment().format('MMMM Do YYYY');
+        product.save()
 
-                    product.save()
-
-                    res.json({
-                        success: true,
-                        message: 'successfully saved'
-                    })
-                })
+        res.json({
+            success: true,
+            message: 'successfully saved'
         })
 
     } catch (err) {
